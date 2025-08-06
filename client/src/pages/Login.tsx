@@ -1,3 +1,4 @@
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,13 +16,14 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
   const onSubmit = (data: LoginFormData) => {
     console.log("Login data:", data);
+    // TODO: Add login API call here
   };
 
   return (
@@ -43,15 +45,16 @@ const Login = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="bg-white mt-10 p-6 rounded shadow-md space-y-5"
         >
-          {/* Username */}
+          {/* Email */}
           <div>
-            <label className="block font-medium mb-1">Username</label>
+            <label className="block font-medium mb-1">Email</label>
             <div className="flex items-center border-b border-gray-400">
               <input
                 type="email"
                 {...register("email")}
-                placeholder="PRAJESH SHAKYA"
+                placeholder="email@example.com"
                 className="w-full px-2 py-2 outline-none text-gray-700 placeholder-gray-400"
+                disabled={isSubmitting}
               />
               <FiUser className="text-gray-500" />
             </div>
@@ -67,7 +70,9 @@ const Login = () => {
               <input
                 type="password"
                 {...register("password")}
+                placeholder="Your password"
                 className="w-full px-2 py-2 outline-none text-gray-700 placeholder-gray-400"
+                disabled={isSubmitting}
               />
               <FiEyeOff className="text-gray-500" />
             </div>
@@ -80,8 +85,9 @@ const Login = () => {
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-full hover:bg-blue-700"
+            disabled={isSubmitting}
           >
-            Login
+            {isSubmitting ? "Logging in..." : "Login"}
           </button>
 
           {/* Forgot Password */}
